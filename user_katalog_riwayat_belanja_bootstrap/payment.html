@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartCanteen - Checkout Terminal</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary: #00355f;
+            --on-primary: #ffffff;
+            --primary-container: #0f4c81;
+            --on-primary-container: #8ebdf9;
+            --secondary: #48626e;
+            --on-secondary: #ffffff;
+            --secondary-container: #cbe7f5;
+            --background: #f8f9fa;
+            --surface: #f8f9fa;
+            --on-surface: #191c1d;
+            --surface-variant: #e1e3e4;
+            --outline: #727780;
+            --error: #ba1a1a;
+            --error-container: #ffdad6;
+            --on-error-container: #93000a;
+            --surface-container-low: #f3f4f5;
+            --surface-container: #edeeef;
+            --surface-container-high: #e7e8e9;
+            --primary-fixed: #d2e4ff;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--background);
+            color: var(--on-surface);
+            overflow: hidden;
+        }
+
+                /* ============ SIDEBAR UNIVERSAL - SAMA UNTUK SEMUA HALAMAN ============ */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: white;
+            border-right: 1px solid var(--surface-variant);
+            z-index: 1000;
+            padding: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-container);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-icon .material-symbols-outlined {
+            color: var(--on-primary-container);
+            font-size: 24px;
+        }
+
+        .sidebar-brand h5 {
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .sidebar-brand small {
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            padding: 0.625rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--on-surface-variant);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-radius: 0;
+        }
+
+        .nav-link:hover {
+            background-color: var(--surface-container-low);
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            background-color: var(--surface-container);
+            color: var(--primary);
+            font-weight: 700;
+            border-right: 4px solid var(--primary);
+        }
+
+        .nav-link .material-symbols-outlined {
+            font-size: 24px;
+        }
+
+        .sidebar-footer {
+            padding: 0 1.5rem;
+            margin-top: auto;
+        }
+
+        .sidebar-footer .btn-sidebar {
+            background-color: var(--primary);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-footer .btn-sidebar:hover {
+            background-color: var(--primary-container);
+        }
+
+        .sidebar-footer .btn-sidebar .material-symbols-outlined {
+            font-size: 20px;
+        }
+
+        /* Main Content Adjustments */
+        .main-wrapper {
+            margin-left: 260px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-app-bar {
+            height: 64px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--surface-variant);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        /* Calculator Keys */
+        .keypad-btn {
+            height: 64px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: 1px solid var(--surface-variant);
+            background-color: var(--surface-container-low);
+            color: var(--on-surface);
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .keypad-btn:active {
+            transform: scale(0.95);
+            background-color: var(--surface-variant);
+        }
+
+        .keypad-btn.btn-error {
+            background-color: var(--error-container);
+            color: var(--on-error-container);
+            border-color: transparent;
+        }
+
+        /* Item Cards */
+        .item-card {
+            border: 1px solid var(--surface-variant);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+            background: white;
+        }
+
+        .item-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .item-card img {
+            height: 100px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .price-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255,255,255,0.9);
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--primary);
+        }
+
+        /* NFC Payment Card */
+        .payment-tap-area {
+            border: 2px dashed var(--on-primary-container);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            background-color: white;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .payment-tap-area:hover {
+            background-color: #f0f7ff;
+            border-color: var(--primary);
+        }
+
+        .nfc-icon-container {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary-fixed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .ping-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Material Icons sizing */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .btn-primary-custom {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        .btn-primary-custom:hover {
+            background-color: var(--primary-container);
+            color: white;
+        }
+
+        /* Kalkulator Styling */
+        .keypad-btn {
+            height: 64px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: 1px solid var(--surface-variant);
+            background-color: var(--surface-container-low);
+            color: var(--on-surface);
+            transition: all 0.1s;
+        }
+
+        .keypad-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+            border-color: #ffc107;
+        }
+
+        .btn-warning:active {
+            transform: scale(0.95);
+        }
+
+        .calc-clear {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .calc-clear:active {
+            transform: scale(0.95);
+        }
+
+        .calc-equals {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .calc-equals:active {
+            transform: scale(0.95);
+        }
+
+        #calcDisplay {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            word-break: break-all;
+        }
+
+    </style>
+</head>
+<body>
+<!-- SIDEBAR - UNIVERSAL SAMA UNTUK SEMUA HALAMAN -->
+<aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+        <div class="brand-icon">
+            <span class="material-symbols-outlined">restaurant</span>
+        </div>
+        <div>
+            <h5>DMEC</h5>
+            <small>DMIA E-Canteen</small>
+        </div>
+    </a>
+    
+    <div class="nav">
+        <a class="nav-link" href="dashboard.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+        </a>
+        <a class="nav-link" href="inventory.html">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span>Inventory</span>
+        </a>
+        <a class="nav-link" href="payment.html">
+            <span class="material-symbols-outlined">calculate</span>
+            <span>Checkout</span>
+        </a>
+        <a class="nav-link" href="history.html">
+            <span class="material-symbols-outlined">receipt_long</span>
+            <span>History</span>
+        </a>
+        <a class="nav-link" href="setting.html">
+            <span class="material-symbols-outlined">settings</span>
+            <span>Settings</span>
+        </a>
+    </div>
+    
+    <div class="sidebar-footer">
+        <a href="payment.html" class="btn-sidebar">
+            <span class="material-symbols-outlined">add</span>
+            New Transaction
+        </a>
+    </div>
+</aside>
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+<!-- Top App Bar -->
+<header class="top-app-bar justify-content-between">
+<div class="d-flex align-items-center flex-grow-1">
+<div class="position-relative w-50">
+<span class="material-symbols-outlined position-absolute top-50 translate-middle-y ms-3 text-muted">search</span>
+<input class="form-control rounded-pill border-0 bg-light ps-5 py-2" placeholder="Search menu items or SKU..." type="text"/>
+</div>
+</div>
+<div class="d-flex align-items-center gap-4">
+<div class="d-flex align-items-center gap-3 border-end pe-4">
+<span class="material-symbols-outlined text-muted cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-muted cursor-pointer">help_outline</span>
+</div>
+<div class="d-flex align-items-center gap-3">
+<div class="text-end d-none d-md-block">
+<p class="mb-0 fw-bold small" style="color: var(--primary);">Admin Station 04</p>
+<p class="mb-0 text-muted" style="font-size: 11px;">Terminal Active</p>
+</div>
+<img alt="Admin" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPrTabF7_BOnzozmVJYLbPkFLEumIzeyGteqW5hqZPQZ_tJPAIQEp6DZoVHvzhXqYX-D8EpAZRCo6cEzn9gupD5g9sCaJgE5YjdT2l5BtgW3UhepOYYrnUU4_8ljaPJOUeXpjZUk9RahyhQH5R9ID7TZunn0z_pcPF-QL8k4bgoJzgbjgUl4--Gbtq8iIjaccznF9K7rU5IAub0491t6_USn4sHigLH_Edl8VIALavg6kjMw3lI3SwTATvTH5e7wNS6omVduurJg" width="40"/>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="content-scroll container-fluid">
+<div class="row h-100 g-4">
+<!-- Left Column: Products & Keypad -->
+<div class="col-lg-8">
+<div class="d-flex justify-content-between align-items-center mb-4">
+<h2 class="fw-bold mb-0" style="color: var(--primary);">Checkout Terminal</h2>
+<div class="d-flex gap-2">
+<span class="badge rounded-pill text-primary" style="background-color: var(--primary-fixed);">Station ID: 7721</span>
+<span class="badge rounded-pill text-muted" style="background-color: var(--surface-container-high);">Mode: Quick Entry</span>
+</div>
+</div>
+<div class="row g-4">
+<!-- Calculator Section -->
+<div class="col-md-5">
+    <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+        <label class="small text-uppercase text-muted fw-bold mb-2">INPUT NOMINAL MANUAL</label>
+        <div class="bg-light rounded-3 p-3 text-end mb-4 border-2 border-primary border-opacity-10">
+            <span class="h1 mb-0 fw-bold" style="color: var(--primary);" id="calcDisplay">0</span>
+        </div>
+        <div class="row g-2">
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-btn" data-value="7">7</button></div>
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-btn" data-value="8">8</button></div>
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-btn" data-value="9">9</button></div>
+            <div class="col-3"><button class="btn keypad-btn btn-warning w-100 rounded-3 calc-operator" data-op="÷">÷</button></div>
+            
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-btn" data-value="4">4</button></div>
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-btn" data-value="5">5</button></div>
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-btn" data-value="6">6</button></div>
+            <div class="col-3"><button class="btn keypad-btn btn-warning w-100 rounded-3 calc-operator" data-op="×">×</button></div>
+            
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-btn" data-value="1">1</button></div>
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-btn" data-value="2">2</button></div>
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-btn" data-value="3">3</button></div>
+            <div class="col-3"><button class="btn keypad-btn btn-warning w-100 rounded-3 calc-operator" data-op="-">-</button></div>
+            
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-clear" data-clear="all">AC</button></div>
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-btn" data-value="0">0</button></div>
+            <div class="col-3"><button class="btn keypad-btn w-100 rounded-3 calc-equals" data-equals="=">=</button></div>
+            <div class="col-3"><button class="btn keypad-btn btn-warning w-100 rounded-3 calc-operator" data-op="+">+</button></div>
+        </div>
+        <button class="btn btn-primary-custom w-100 mt-4 py-3 fw-bold rounded-3 shadow-sm" id="addToOrderBtn">
+            Tambahkan ke Pesanan
+        </button>
+    </div>
+</div>
+<!-- Menu Section -->
+<div class="col-md-7">
+<div class="d-flex gap-2 overflow-x-auto mb-4 pb-1">
+<button class="btn btn-primary-custom rounded-pill px-4 text-nowrap">Favorit</button>
+<button class="btn btn-outline-secondary border-secondary-subtle rounded-pill px-4 text-nowrap">Makanan</button>
+<button class="btn btn-outline-secondary border-secondary-subtle rounded-pill px-4 text-nowrap">Minuman</button>
+<button class="btn btn-outline-secondary border-secondary-subtle rounded-pill px-4 text-nowrap">Makanan Ringan</button>
+<button class="btn btn-outline-secondary border-secondary-subtle rounded-pill px-4 text-nowrap">Lain-lain</button>
+</div>
+<div class="row g-3">
+<!-- Item Card -->
+<div class="col-6 col-sm-4">
+<div class="item-card position-relative">
+<div class="price-badge">$8.50</div>
+<img alt="Grilled Chicken Salad" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPrTabF7_BOnzozmVJYLbPkFLEumIzeyGteqW5hqZPQZ_tJPAIQEp6DZoVHvzhXqYX-D8EpAZRCo6cEzn9gupD5g9sCaJgE5YjdT2l5BtgW3UhepOYYrnUU4_8ljaPJOUeXpjZUk9RahyhQH5R9ID7TZunn0z_pcPF-QL8k4bgoJzgbjgUl4--Gbtq8iIjaccznF9K7rU5IAub0491t6_USn4sHigLH_Edl8VIALavg6kjMw3lI3SwTATvTH5e7wNS6omVduurJg"/>
+<div class="p-3">
+<p class="mb-0 fw-bold small text-truncate">Grilled Chicken Salad</p>
+<small class="text-uppercase text-muted fw-bold" style="font-size: 9px;">Healthy Choice</small>
+</div>
+</div>
+</div>
+<!-- Item Card -->
+<div class="col-6 col-sm-4">
+<div class="item-card position-relative">
+<div class="price-badge">$12.00</div>
+<img alt="Classic Cheeseburger" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC9mv7hF5dBZnQsyIbDPiW2opEVLTuwOiTHvABh8M2NzhJ0nuScZ1yGdOKcQfWDtyLL-LTvXsw-6GKB6VyL6UOqqxcDywxEHQ5YyfDW8caVeb4uWI_XAytvo6UFhRWjpwVnIRi5KixRvXNOiph5j4mFLb9_vpZ72ZjJpAyR5sWcWLEl0-w7EXB4ndE29Dz_RAF-7ppyB3MrOhqjg_Nx5tb7dkdai5yvLZCgBiR0w3TqSUa4p4iHi4rLDoHtR8_Ng0EOAncWYRbwA"/>
+<div class="p-3">
+<p class="mb-0 fw-bold small text-truncate">Classic Cheeseburger</p>
+<small class="text-uppercase text-muted fw-bold" style="font-size: 9px;">Hot Meal</small>
+</div>
+</div>
+</div>
+<!-- Item Card -->
+<div class="col-6 col-sm-4">
+<div class="item-card position-relative">
+<div class="price-badge">$4.25</div>
+<img alt="Cappuccino" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPrTabF7_BOnzozmVJYLbPkFLEumIzeyGteqW5hqZPQZ_tJPAIQEp6DZoVHvzhXqYX-D8EpAZRCo6cEzn9gupD5g9sCaJgE5YjdT2l5BtgW3UhepOYYrnUU4_8ljaPJOUeXpjZUk9RahyhQH5R9ID7TZunn0z_pcPF-QL8k4bgoJzgbjgUl4--Gbtq8iIjaccznF9K7rU5IAub0491t6_USn4sHigLH_Edl8VIALavg6kjMw3lI3SwTATvTH5e7wNS6omVduurJg"/>
+<div class="p-3">
+<p class="mb-0 fw-bold small text-truncate">Italian Cappuccino</p>
+<small class="text-uppercase text-muted fw-bold" style="font-size: 9px;">Beverage</small>
+</div>
+</div>
+</div>
+<!-- Item Card -->
+<div class="col-6 col-sm-4">
+<div class="item-card position-relative">
+<div class="price-badge">$6.50</div>
+<img alt="Fruit Bowl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5mG9ylUHK-SwAOqYjiF8vgNEIvxWs-ZiDLHJ3CvaM8jO_dCjAW_5dKXKK9NYu7sF_CitiCOOGTGEQT86JXOfxsAU9vlTYpuMvt0Io_xd6L0pIL1uGcyO3fjX0O0G_4AKVtcX1fL159kkaCfKS0pH60tAgpr-ZlCnYSaVm9dZF5SV1UNHDxuVA0zVPRfFcEv_1ZYljSfWuCJWqYHQIpULp11SkeNrjXydys3M_XpEC1eqL31SIwxGZzGB-k7YkoSJd2egz8RRkMg"/>
+<div class="p-3">
+<p class="mb-0 fw-bold small text-truncate">Fresh Fruit Bowl</p>
+<small class="text-uppercase text-muted fw-bold" style="font-size: 9px;">Snacks</small>
+</div>
+</div>
+</div>
+<!-- Item Card -->
+<div class="col-6 col-sm-4">
+<div class="item-card position-relative">
+<div class="price-badge">$5.75</div>
+<img alt="Yogurt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPrTabF7_BOnzozmVJYLbPkFLEumIzeyGteqW5hqZPQZ_tJPAIQEp6DZoVHvzhXqYX-D8EpAZRCo6cEzn9gupD5g9sCaJgE5YjdT2l5BtgW3UhepOYYrnUU4_8ljaPJOUeXpjZUk9RahyhQH5R9ID7TZunn0z_pcPF-QL8k4bgoJzgbjgUl4--Gbtq8iIjaccznF9K7rU5IAub0491t6_USn4sHigLH_Edl8VIALavg6kjMw3lI3SwTATvTH5e7wNS6omVduurJg"/>
+<div class="p-3">
+<p class="mb-0 fw-bold small text-truncate">Honey Greek Yogurt</p>
+<small class="text-uppercase text-muted fw-bold" style="font-size: 9px;">Healthy Choice</small>
+</div>
+</div>
+</div>
+<!-- More Items -->
+<div class="col-6 col-sm-4">
+<div class="item-card bg-light d-flex flex-column align-items-center justify-content-center text-center p-3" style="min-height: 160px;">
+<span class="material-symbols-outlined text-muted h1 mb-2">category</span>
+<p class="mb-0 fw-bold small text-muted">More Items...</p>
+<small class="text-uppercase text-muted fw-bold" style="font-size: 9px;">View Full Menu</small>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Order Summary & Payment -->
+<div class="col-lg-4">
+<div class="card h-100 border-0 shadow-sm rounded-4 flex-column">
+<!-- Order Header -->
+<div class="p-4 border-bottom bg-light bg-opacity-25 rounded-top-4">
+<div class="d-flex justify-content-between align-items-start mb-1">
+<h4 class="fw-bold mb-0" style="color: var(--primary);">Current Order</h4>
+<span class="badge text-primary fw-bold" style="background-color: var(--secondary-container);">T-042</span>
+</div>
+<small class="text-muted fw-medium">Customer: Guest Checkout</small>
+</div>
+<!-- Order Items -->
+<div class="p-4 flex-grow-1 overflow-y-auto">
+<div class="d-flex align-items-center justify-content-between mb-4 group">
+<div class="d-flex align-items-center gap-3">
+<div class="bg-light rounded px-2 py-1 fw-bold text-primary small">1x</div>
+<div>
+<p class="mb-0 fw-bold small">Classic Cheeseburger</p>
+<small class="text-muted" style="font-size: 11px;">+ Extra Cheese</small>
+</div>
+</div>
+<div class="text-end">
+<p class="mb-0 fw-bold small">$12.00</p>
+<span class="material-symbols-outlined text-danger small cursor-pointer">close</span>
+</div>
+</div>
+<div class="d-flex align-items-center justify-content-between mb-4 group">
+<div class="d-flex align-items-center gap-3">
+<div class="bg-light rounded px-2 py-1 fw-bold text-primary small">2x</div>
+<div>
+<p class="mb-0 fw-bold small">Italian Cappuccino</p>
+<small class="text-muted" style="font-size: 11px;">Regular, Whole Milk</small>
+</div>
+</div>
+<div class="text-end">
+<p class="mb-0 fw-bold small">$8.50</p>
+<span class="material-symbols-outlined text-danger small cursor-pointer">close</span>
+</div>
+</div>
+<hr class="my-4 border-secondary border-opacity-10 border-dashed"/>
+<div class="d-flex justify-content-between text-muted mb-2 small fw-medium">
+<span>Subtotal</span>
+<span>$20.50</span>
+</div>
+<div class="d-flex justify-content-between text-muted mb-4 small fw-medium">
+<span>Tax (5%)</span>
+<span>$1.02</span>
+</div>
+<div class="d-flex justify-content-between align-items-end">
+<span class="fw-bold h6 mb-2">Total Amount</span>
+<span class="h1 fw-bold mb-0" style="color: var(--primary);">$21.52</span>
+</div>
+</div>
+<!-- Payment Area -->
+<div class="p-4 border-top bg-light rounded-bottom-4">
+<div class="text-center mb-3">
+<small class="text-uppercase text-muted fw-bold tracking-widest" style="font-size: 10px; letter-spacing: 2px;">Payment Method</small>
+</div>
+<!-- NFC Area -->
+<div class="payment-tap-area mb-3">
+<div class="nfc-icon-container">
+<div class="ping-effect"></div>
+<span class="material-symbols-outlined h1 text-primary mb-0">contactless</span>
+</div>
+<h5 class="fw-bold mb-1" style="color: var(--primary);">Tap ID Card to Pay</h5>
+<p class="text-muted small mb-0">Employee RFID or Campus Card</p>
+</div>
+<div class="row g-2">
+<div class="col-6">
+<button class="btn btn-outline-secondary w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2 small">
+<span class="material-symbols-outlined fs-6">payments</span>
+                                        Cash
+                                    </button>
+</div>
+<div class="col-6">
+<button class="btn btn-outline-secondary w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2 small">
+<span class="material-symbols-outlined fs-6">qr_code</span>
+                                        QR Code
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Button (Print) -->
+<button class="btn btn-primary-custom rounded-circle shadow-lg d-flex align-items-center justify-content-center position-fixed" style="bottom: 2rem; right: 36%; width: 56px; height: 56px; z-index: 1001;">
+<span class="material-symbols-outlined">print</span>
+</button>
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+<script>
+// ==================== E-CANTEEN NAVIGATION ====================
+(function() {
+    // Fungsi untuk berpindah halaman
+    function goTo(page) {
+        window.location.href = page;
+    }
+    
+    // Dapatkan halaman saat ini
+    var currentPage = window.location.pathname.split('/').pop();
+    if (currentPage === '' || currentPage === 'index.html') currentPage = 'dashboard.html';
+    
+    // 1. PERBAIKI SEMUA MENU SIDEBAR
+    var allLinks = document.querySelectorAll('.sidebar a, .sidebar .nav-link, .sidebar .nav-link-custom');
+    for (var i = 0; i < allLinks.length; i++) {
+        var link = allLinks[i];
+        var text = link.innerText.trim();
+        
+        // Set href berdasarkan teks menu
+        if (text === 'Dashboard') {
+            link.href = 'dashboard.html';
+            if (currentPage === 'dashboard.html') link.classList.add('active');
+        }
+        else if (text === 'Inventory') {
+            link.href = 'inventory.html';
+            if (currentPage === 'inventory.html') link.classList.add('active');
+        }
+        else if (text === 'Checkout') {
+            link.href = 'payment.html';
+            if (currentPage === 'payment.html') link.classList.add('active');
+        }
+        else if (text === 'History') {
+            link.href = 'history.html';
+            if (currentPage === 'history.html') link.classList.add('active');
+        }
+        else if (text === 'Settings') {
+            link.href = 'setting.html';
+            if (currentPage === 'setting.html') link.classList.add('active');
+        }
+    }
+    
+    // 2. PERBAIKI TOMBOL NEW TRANSACTION
+    var allButtons = document.querySelectorAll('button, .btn, a');
+    for (var i = 0; i < allButtons.length; i++) {
+        var btn = allButtons[i];
+        if (btn.innerText.indexOf('New Transaction') !== -1) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'payment.html';
+            };
+            btn.style.cursor = 'pointer';
+        }
+    }
+    
+    // 3. PERBAIKI LOGO KE DASHBOARD
+    var logos = document.querySelectorAll('.sidebar-brand, .sidebar-logo, .d-flex.align-items-center.gap-3');
+    for (var i = 0; i < logos.length; i++) {
+        var logo = logos[i];
+        logo.style.cursor = 'pointer';
+        logo.onclick = function() {
+            window.location.href = 'dashboard.html';
+        };
+    }
+    
+    // 4. PERBAIKI SEE ALL HISTORY
+    for (var i = 0; i < allButtons.length; i++) {
+        var btn = allButtons[i];
+        if (btn.innerText.indexOf('See All History') !== -1 || btn.innerText.indexOf('See All') !== -1) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'history.html';
+            };
+            btn.style.cursor = 'pointer';
+        }
+    }
+    
+    console.log('Navigasi siap! Halaman saat ini: ' + currentPage);
+})();
+// ==================== END NAVIGATION ====================
+</script>
+</body></html>

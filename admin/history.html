@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Riwayat Transaksi - DMIA E-Canteen</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary: #00355f;
+            --on-primary: #ffffff;
+            --primary-container: #0f4c81;
+            --on-primary-container: #8ebdf9;
+            --secondary: #48626e;
+            --on-secondary: #ffffff;
+            --secondary-container: #cbe7f5;
+            --background: #f8f9fa;
+            --on-background: #191c1d;
+            --surface: #f8f9fa;
+            --on-surface: #191c1d;
+            --surface-variant: #e1e3e4;
+            --on-surface-variant: #42474f;
+            --outline: #727780;
+            --error: #ba1a1a;
+            --success: #198754;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--background);
+            color: var(--on-background);
+            overflow-x: hidden;
+        }
+
+               /* ============ SIDEBAR UNIVERSAL - SAMA UNTUK SEMUA HALAMAN ============ */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: white;
+            border-right: 1px solid var(--surface-variant);
+            z-index: 1000;
+            padding: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-container);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-icon .material-symbols-outlined {
+            color: var(--on-primary-container);
+            font-size: 24px;
+        }
+
+        .sidebar-brand h5 {
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .sidebar-brand small {
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            padding: 0.625rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--on-surface-variant);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-radius: 0;
+        }
+
+        .nav-link:hover {
+            background-color: var(--surface-container-low);
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            background-color: var(--surface-container);
+            color: var(--primary);
+            font-weight: 700;
+            border-right: 4px solid var(--primary);
+        }
+
+        .nav-link .material-symbols-outlined {
+            font-size: 24px;
+        }
+
+        .sidebar-footer {
+            padding: 0 1.5rem;
+            margin-top: auto;
+        }
+
+        .sidebar-footer .btn-sidebar {
+            background-color: var(--primary);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-footer .btn-sidebar:hover {
+            background-color: var(--primary-container);
+        }
+
+        .sidebar-footer .btn-sidebar .material-symbols-outlined {
+            font-size: 20px;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding-top: 64px;
+            min-height: 100vh;
+        }
+
+        /* Top Bar Styling */
+        .top-bar {
+            height: 64px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--surface-variant);
+            z-index: 1040;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+
+        .search-container {
+            max-width: 500px;
+            flex: 1;
+            position: relative;
+        }
+
+        .search-container .material-symbols-outlined {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--outline);
+            font-size: 20px;
+        }
+
+        .search-input {
+            padding-left: 40px;
+            border-radius: 20px;
+            background-color: var(--background);
+            border: none;
+        }
+
+        /* Component Overrides */
+        .card {
+            border: 1px solid var(--surface-variant);
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .btn-outline-secondary {
+            border-color: var(--outline);
+            color: var(--on-surface);
+            font-weight: 500;
+        }
+
+        .revenue-card {
+            background-color: var(--primary-container);
+            color: white;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .table thead th {
+            background-color: var(--background);
+            color: var(--on-surface-variant);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: none;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--surface-variant);
+        }
+
+        .table tbody td {
+            padding: 1rem 1.5rem;
+            vertical-align: middle;
+            color: var(--on-surface);
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+        .trx-id {
+            color: var(--primary-container);
+            font-weight: 700;
+        }
+
+        .status-success {
+            color: var(--success);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8125rem;
+        }
+
+        .status-failed {
+            color: var(--error);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8125rem;
+        }
+
+        .badge-credit {
+            background-color: var(--secondary-container);
+            color: var(--primary);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--secondary-container);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .material-symbols-outlined {
+            vertical-align: middle;
+        }
+
+        .pagination .page-link {
+            border: none;
+            color: var(--on-surface-variant);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            margin: 0 2px;
+            border-radius: 4px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .report-banner {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--surface-variant);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+<!-- SIDEBAR - UNIVERSAL SAMA UNTUK SEMUA HALAMAN -->
+<aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+        <div class="brand-icon">
+            <span class="material-symbols-outlined">restaurant</span>
+        </div>
+        <div>
+            <h5>DMEC</h5>
+            <small>DMIA E-Canteen</small>
+        </div>
+    </a>
+    
+    <div class="nav">
+        <a class="nav-link" href="dashboard.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+        </a>
+        <a class="nav-link" href="inventory.html">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span>Inventaris</span>
+        </a>
+        <a class="nav-link" href="payment.html">
+            <span class="material-symbols-outlined">calculate</span>
+            <span>Transaksi</span>
+        </a>
+        <a class="nav-link" href="history.html">
+            <span class="material-symbols-outlined">receipt_long</span>
+            <span>Riwayat Transaksi</span>
+        </a>
+        <a class="nav-link" href="setting.html">
+            <span class="material-symbols-outlined">settings</span>
+            <span>Pengaturan</span>
+        </a>
+    </div>
+    
+    <div class="sidebar-footer">
+        <a href="payment.html" class="btn-sidebar">
+            <span class="material-symbols-outlined">add</span>
+            Transaksi Baru
+        </a>
+    </div>
+</aside>
+<!-- Top Bar -->
+<header class="top-bar">
+<div class="search-container">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<input id="historySearch"class="form-control search-input"placeholder="Cari transaksi...">
+</div>
+<div class="ms-auto d-flex align-items-center gap-4">
+<div class="d-flex align-items-center gap-3 pe-4 border-end">
+<button class="btn btn-link text-muted p-0 position-relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+</button>
+<button class="btn btn-link text-muted p-0">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+<div class="d-flex align-items-center gap-3">
+<div class="text-end d-none d-md-block">
+<div class="fw-bold small lh-1">Administrator</div>
+<small class="text-muted" style="font-size: 11px;">Administrator</small>
+</div>
+<img alt="Admin" class="rounded-circle border border-2 border-primary-subtle p-1" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMJ06e1foAp8yIzE9TEkknBcjfZMnN4a-6yhqL1wgUMO2z2QqYvnf5RK2LCq5vip1QxvskqE2oXy_3zaGpq_e9IvXiuKUjFgC5_xAIsokhXwja9OqwsDIXGgbs4DzPaw_jD7N6kXFrIZ-z3_EesY-Xt-6pdSOjNYhke_5-ffP-hr19-1Rjyi_UuyGOfxPjQAprJS6iKFXXR54G9lkcY9TvLzrwFHHc6fwmLp73QtK5w7eWLzHYdc6a7ANV7Le3PnohQK5eDCxPCQ" width="40"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="main-content">
+<div class="container-fluid p-4" style="max-width: 1400px;">
+<!-- Page Header -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+<div>
+<h2 class="fw-bold mb-1">Riwayat Transaksi</h2>
+<p class="text-muted mb-0 small">Daftar seluruh transaksi kantin karyawan beserta rekap pembayaran.</p>
+</div>
+<div class="d-flex gap-2">
+<button id="exportPDF"></button>
+<button class="btn btn-outline-secondary d-flex align-items-center gap-2">
+<span class="material-symbols-outlined fs-5" data-icon="file_download">file_download</span>
+                        Ekspor PDF
+                    </button>
+<button id="exportCSV"></button>                    
+<button class="btn btn-outline-secondary d-flex align-items-center gap-2">
+<span class="material-symbols-outlined fs-5" data-icon="csv">csv</span>
+                        Ekspor CSV
+                    </button>
+</div>
+</div>
+<!-- Filters and Stats Grid -->
+<div class="row g-4 mb-4">
+<div class="col-lg-9">
+<div class="card h-100">
+<div class="card-body p-3">
+<div class="row g-3 align-items-end">
+<div class="col-md-3">
+<label class="form-label small fw-bold text-muted mb-1">Rentang Tanggal</label>
+<div class="input-group">
+<span class="input-group-text bg-light border-end-0">
+<span class="material-symbols-outlined fs-6 text-muted" data-icon="calendar_today">calendar_today</span>
+</span>
+<select class="form-select bg-light border-start-0 ps-0 text-sm">
+<option>7 Hari Terakhir</option>
+<option>30 Hari Terakhir</option>
+<option>Bulan Ini</option>
+</select>
+</div>
+</div>
+<div class="col-md-3">
+<label class="form-label small fw-bold text-muted mb-1">Status</label>
+<select class="form-select bg-light text-sm">
+<option>Semua Transaksi</option>
+<option>Berhasil</option>
+<option>Gagal</option>
+<option>Diproses</option>
+</select>
+</div>
+<div class="col-md-3">
+<label class="form-label small fw-bold text-muted mb-1">Metode Pembayaran</label>
+<select class="form-select bg-light text-sm">
+<option>Semua</option>
+<option>Kartu Karyawan</option>
+<option>Kartu Kredit</option>
+<option>QR</option>
+<option>Tunai</option>
+</select>
+</div>
+<div class="col-md-3">
+<button
+id="btnFilterHistory"
+class="btn btn-primary w-100">
+Terapkan Filter
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-3">
+<div class="revenue-card h-100">
+<div class="d-flex justify-content-between align-items-start">
+<span class="small fw-bold opacity-75">Pendapatan Hari Ini</span>
+<span class="material-symbols-outlined fs-5" data-icon="trending_up">trending_up</span>
+</div>
+<div class="mt-3">
+<h3 id="todayRevenue" class="mb-0 fw-bold">
+Rp0
+</h3>
+<small id="todayRevenueInfo">
+Belum ada transaksi
+</small>
+</div>
+</div>
+</div>
+</div>
+<!-- Transaction Table Card -->
+<div class="card overflow-hidden">
+<div class="table-responsive">
+<table class="table mb-0 align-middle">
+<thead>
+<tr>
+<th>Tanggal/Waktu</th>
+<th>ID Transaksi</th>
+<th>Nama Karyawan (NIK)</th>
+<th>Total</th>
+<th>Metode</th>
+<th>Status</th>
+<th class="text-end">Aksi</th>
+</tr>
+</thead>
+<tbody id="historyTableBody">
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="card-footer bg-white border-top-0 d-flex flex-column flex-sm-row justify-content-between align-items-center p-3">
+<p class="text-muted small mb-3 mb-sm-0">Showing <span class="fw-bold text-dark">1 - 5</span> of <span class="fw-bold text-dark">1,248</span> transactions</p>
+<nav>
+<ul class="pagination pagination-sm mb-0">
+    <li class="page-item disabled">
+        <a class="page-link" href="#">
+            <span class="material-symbols-outlined fs-6">chevron_left</span>
+        </a>
+    </li>
+
+    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><span class="page-link">...</span></li>
+    <li class="page-item"><a class="page-link" href="#">24</a></li>
+
+    <li class="page-item">
+        <a class="page-link" href="#">
+            <span class="material-symbols-outlined fs-6">chevron_right</span>
+        </a>
+    </li>
+</ul>
+</nav>
+</div>
+</div>
+<!-- Reconciliation Banner -->
+<div class="report-banner mt-4">
+<div class="d-flex align-items-center gap-4">
+<div class="bg-light rounded-circle p-3 text-primary d-flex align-items-center justify-content-center">
+<span class="material-symbols-outlined fs-2" data-icon="analytics">analytics</span>
+</div>
+<div>
+<h5 class="mb-1 fw-bold">Monthly Reconciliation Ready</h5>
+<p class="text-muted mb-0 small">The billing report for the current cycle is now available for automated generation.</p>
+</div>
+</div>
+<button class="btn d-flex align-items-center gap-2 px-4 py-2" style="background-color: var(--secondary); color: white;">
+<span class="material-symbols-outlined fs-5" data-icon="rocket_launch">rocket_launch</span>
+                    Generate Report
+                </button>
+</div>
+</div>
+</main>
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+<script>
+// ==================== E-CANTEEN NAVIGATION ====================
+(function() {
+    // Fungsi untuk berpindah halaman
+    function goTo(page) {
+        window.location.href = page;
+    }
+    
+    // Dapatkan halaman saat ini
+    var currentPage = window.location.pathname.split('/').pop();
+    if (currentPage === '' || currentPage === 'index.html') currentPage = 'dashboard.html';
+    
+    // 1. PERBAIKI SEMUA MENU SIDEBAR
+    var allLinks = document.querySelectorAll('.sidebar a, .sidebar .nav-link, .sidebar .nav-link-custom');
+    for (var i = 0; i < allLinks.length; i++) {
+        var link = allLinks[i];
+        var text = link.innerText.trim();
+        
+        // Set href berdasarkan teks menu
+        if (text === 'Dashboard') {
+            link.href = 'dashboard.html';
+            if (currentPage === 'dashboard.html') link.classList.add('active');
+        }
+        else if (text === 'Inventaris') {
+            link.href = 'inventory.html';
+            if (currentPage === 'inventory.html') link.classList.add('active');
+        }
+        else if (text === 'Transaksi') {
+            link.href = 'payment.html';
+            if (currentPage === 'payment.html') link.classList.add('active');
+        }
+        else if (text === 'Riwayat Transaksi') {
+            link.href = 'history.html';
+            if (currentPage === 'history.html') link.classList.add('active');
+        }
+        else if (text === 'Pengaturan') {
+            link.href = 'setting.html';
+            if (currentPage === 'setting.html') link.classList.add('active');
+        }
+    }
+    
+    // 2. PERBAIKI TOMBOL NEW TRANSACTION
+    var allButtons = document.querySelectorAll('button, .btn, a');
+    for (var i = 0; i < allButtons.length; i++) {
+        var btn = allButtons[i];
+        if (btn.innerText.indexOf('Transaksi Baru') !== -1) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'payment.html';
+            };
+            btn.style.cursor = 'pointer';
+        }
+    }
+    
+    // 3. PERBAIKI LOGO KE DASHBOARD
+    var logos = document.querySelectorAll('.sidebar-brand, .sidebar-logo, .d-flex.align-items-center.gap-3');
+    for (var i = 0; i < logos.length; i++) {
+        var logo = logos[i];
+        logo.style.cursor = 'pointer';
+        logo.onclick = function() {
+            window.location.href = 'dashboard.html';
+        };
+    }
+    
+    // 4. PERBAIKI SEE ALL HISTORY
+    for (var i = 0; i < allButtons.length; i++) {
+        var btn = allButtons[i];
+        if (btn.innerText.indexOf('See All Riwayat Transaksi') !== -1 || btn.innerText.indexOf('See All') !== -1) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'history.html';
+            };
+            btn.style.cursor = 'pointer';
+        }
+    }
+    
+    console.log('Navigasi siap! Halaman saat ini: ' + currentPage);
+})();
+// ==================== END NAVIGATION ====================
+</script>
+</body></html>

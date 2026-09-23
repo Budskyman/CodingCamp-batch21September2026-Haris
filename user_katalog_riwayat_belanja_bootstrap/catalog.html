@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Product Catalog &amp; History - SmartCanteen</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary: #00355f;
+            --primary-container: #0f4c81;
+            --on-primary-container: #8ebdf9;
+            --secondary: #48626e;
+            --secondary-container: #cbe7f5;
+            --tertiary: #003941;
+            --tertiary-container: #00525d;
+            --surface: #f8f9fa;
+            --surface-variant: #e1e3e4;
+            --background: #f8f9fa;
+            --outline: #727780;
+            --on-surface: #191c1d;
+            --on-surface-variant: #42474f;
+            --primary-fixed: #d2e4ff;
+            --tertiary-fixed: #9eefff;
+            --surface-container: #edeeef;
+            --surface-container-high: #e7e8e9;
+        }
+
+        body {
+            font-family: 'Manrope', 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--on-surface);
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            width: 260px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--surface-variant);
+            z-index: 1000;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #sidebar .nav-link {
+            padding: 0.75rem 2rem;
+            color: var(--on-surface-variant);
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        #sidebar .nav-link:hover {
+            background-color: var(--surface-container-low);
+            color: var(--primary);
+        }
+
+        #sidebar .nav-link.active {
+            color: var(--primary);
+            font-weight: 700;
+            background-color: var(--surface-container);
+            border-right: 4px solid var(--primary);
+        }
+
+        #sidebar .material-symbols-outlined {
+            margin-right: 1rem;
+            font-size: 1.25rem;
+        }
+
+        /* Top Bar Styling */
+        header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 260px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--surface-variant);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 260px;
+            padding: 90px 2rem 3rem;
+            max-width: 1400px;
+        }
+
+        /* Custom Components */
+        .spending-card {
+            background: white;
+            border: 1px solid var(--surface-variant);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .product-card {
+            border: 1px solid var(--surface-variant);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+            background: white;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            border-color: var(--primary-container);
+            transform: translateY(-2px);
+        }
+
+        .product-card img {
+            height: 160px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .badge-category {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.9);
+            color: var(--primary);
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .status-dot {
+            height: 8px;
+            width: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .btn-primary-sc {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+
+        .btn-primary-sc:hover {
+            background-color: var(--primary-container);
+            color: white;
+        }
+
+        .table-history thead th {
+            background-color: var(--surface-container-low);
+            color: var(--on-surface-variant);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--surface-variant);
+            padding: 1rem 1.5rem;
+        }
+
+        .table-history tbody td {
+            padding: 1rem 1.5rem;
+            vertical-align: middle;
+            font-size: 0.875rem;
+        }
+
+        .search-input {
+            background-color: #f1f3f4;
+            border: none;
+            border-radius: 50px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            font-size: 0.875rem;
+        }
+
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-container .material-symbols-outlined {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--outline);
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+<!-- Sidebar -->
+<aside id="sidebar">
+<div class="px-4 mb-4">
+<h5 class="fw-bolder text-primary mb-0">SmartCanteen</h5>
+<small class="text-uppercase text-muted opacity-75" style="font-size: 10px; letter-spacing: 1px;">Enterprise Management</small>
+</div>
+<nav class="nav flex-column mb-auto">
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined">inventory_2</span> Inventory
+            </a>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined">calculate</span> Checkout
+            </a>
+<a class="nav-link active" href="#">
+<span class="material-symbols-outlined">receipt_long</span> History
+            </a>
+<a class="nav-link" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+</nav>
+<div class="px-3">
+<button class="btn btn-primary-sc w-100 d-flex align-items-center justify-content-center gap-2">
+<span class="material-symbols-outlined fs-6">add</span> New Transaction
+            </button>
+</div>
+</aside>
+<!-- Top Bar -->
+<header>
+<div class="search-container">
+<span class="material-symbols-outlined">search</span>
+<input class="form-control search-input" placeholder="Search catalog..." type="text"/>
+</div>
+<div class="ms-auto d-flex align-items-center gap-4">
+<span class="material-symbols-outlined text-muted" style="cursor:pointer">notifications</span>
+<span class="material-symbols-outlined text-muted" style="cursor:pointer">help_outline</span>
+<div class="d-flex align-items-center border-start ps-4">
+<div class="text-end me-3 d-none d-md-block">
+<div class="fw-bold small lh-1">Alex Admin</div>
+<small class="text-muted" style="font-size: 10px;">Administrator</small>
+</div>
+<img alt="Admin" class="rounded-circle" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuMLg7jrvyRCf1HYAYESKSpSoic-Pn4kOYt0pwBGYrFv2TcnEW7OePhRV4QyH2dVzDXt8_oAVWG_yrZaYwUhGiR-g3ab3McrlTcsKuSAhUztK46CZpyLs14-JBqY5_oaYYQB2euhAoJJxl6mslcM5IDJm9ASNssBAtTyzdczRRz38ACyWQtlZhOa1s-3jhWQPD13O1sfz2d0JTfv_ec9qmD1NpNCYtDO8caNw_dEhezcuk_2z5Wc71s6EKctdlgfje9LhJtA0wnw" width="40"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main>
+<!-- Spending Overview Card -->
+<div class="spending-card mb-5">
+<div class="row align-items-center">
+<div class="col-md-6 d-flex align-items-center gap-4">
+<div class="rounded-circle d-flex align-items-center justify-content-center text-primary" style="width: 56px; height: 56px; background-color: var(--primary-fixed);">
+<span class="material-symbols-outlined fs-2">account_balance_wallet</span>
+</div>
+<div>
+<small class="text-muted text-uppercase fw-bold" style="letter-spacing: 1px; font-size: 0.7rem;">Monthly Expenditure</small>
+<h2 class="fw-bold mb-0" style="font-size: 2.25rem;">$1,452.80</h2>
+</div>
+</div>
+<div class="col-md-6 text-md-end mt-3 mt-md-0 d-flex justify-content-md-end gap-5">
+<div>
+<small class="text-muted d-block">Previous Month</small>
+<span class="fw-bold text-secondary">$1,280.00</span>
+</div>
+<div>
+<small class="text-muted d-block">Trend</small>
+<span class="fw-bold text-success d-flex align-items-center justify-content-end">
+<span class="material-symbols-outlined fs-6 me-1">trending_up</span> +12%
+                        </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Product Catalog Section -->
+<section class="mb-5">
+<div class="d-flex flex-wrap align-items-end justify-content-between mb-4 gap-3">
+<div>
+<h3 class="fw-bold mb-1">Available Products</h3>
+<p class="text-muted small mb-0">Curated items available for purchase today</p>
+</div>
+<div class="d-flex gap-2">
+<span class="badge rounded-pill text-primary" style="background-color: var(--primary-fixed); padding: 8px 16px; font-weight: 700; font-size: 0.65rem;">DAILY MENU</span>
+<span class="badge rounded-pill text-tertiary" style="background-color: var(--tertiary-fixed); padding: 8px 16px; font-weight: 700; font-size: 0.65rem;">STOCKED</span>
+</div>
+</div>
+<div class="row g-4">
+<!-- Product 1 -->
+<div class="col-sm-6 col-lg-3">
+<div class="product-card position-relative shadow-sm">
+<span class="badge-category">Hot Meal</span>
+<img alt="Salad" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq9HT0GRb_XhGp-j0tauspHxtUyF1pHk-tGP5_L_bKgjtZYAcn2kTIh_ycxmWvourIJtORhmwMbMotZlHzSMa_pUS83FCuQM4uo2Sgfp6Eu9Tuqao-ociibZMUSgixv1iW1w4gwu03Ul1EoUBVfalzadJuyU9mNY45fTri6urUCdD_-_s8R8Xkg6Te5K-FqPPSioFvWXwsP9dmw_GPzVoki7HnpAGZSvMFt89C0W7ugMbc1FEc7XcjgqUa1ZT2z4gCWz-_ilvR4Q"/>
+<div class="p-3">
+<div class="d-flex justify-content-between align-items-center mb-1">
+<h6 class="fw-bold mb-0 text-truncate">Harvest Grain Bowl</h6>
+<span class="fw-bold text-primary">$12.50</span>
+</div>
+<p class="text-muted small mb-3" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Quinoa, seasonal greens, roasted root vegetables, and lemon zest.</p>
+<div class="d-flex justify-content-between align-items-center">
+<span class="badge bg-success-subtle text-success px-2 py-1" style="font-size: 10px; font-weight: 700;">IN STOCK</span>
+<span class="material-symbols-outlined text-muted opacity-50 fs-6">info</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="col-sm-6 col-lg-3">
+<div class="product-card position-relative shadow-sm">
+<span class="badge-category">Beverage</span>
+<img alt="Coffee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRSOFF0w8zgZqZm1YQ2aFGIEkltFLZhA1DH55SR3NbBNZdMWB63DgD2CZo-JXLb4wZiRaReHdFyjt6hQbsGgJGSZc3EjJpJ-Fibjcqco3uL2TnniLmvV810tLkBr5-PS-Mcen-EFUUyHMrsGdqe8zQ4SdhZbMi6RK85zqsI3SDoPlsVovMcUNDIQ-0ZAs1Nfx2Uemw1koO25is5mGQfbwhKp9DhXPF3uPy5ICFBAF6ZWpRoCuqEmKxnjDmVYjXCZYS-73U-9axzQ"/>
+<div class="p-3">
+<div class="d-flex justify-content-between align-items-center mb-1">
+<h6 class="fw-bold mb-0 text-truncate">Artisan Latte</h6>
+<span class="fw-bold text-primary">$4.25</span>
+</div>
+<p class="text-muted small mb-3" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Double shot of premium espresso with silky steamed milk.</p>
+<div class="d-flex justify-content-between align-items-center">
+<span class="badge bg-success-subtle text-success px-2 py-1" style="font-size: 10px; font-weight: 700;">IN STOCK</span>
+<span class="material-symbols-outlined text-muted opacity-50 fs-6">info</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="col-sm-6 col-lg-3">
+<div class="product-card position-relative shadow-sm">
+<span class="badge-category">Quick Bite</span>
+<img alt="Wrap" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3zSiGkiGEaruoVBq5OPi0AA-KTZCD-5XJNR4dPv_4ugX6R9FP0Y0a19WWRbiRU-wQHhmubJH_6wtj4RH4kAmSDkPI1ialrEpTlpKMn_AEwiJ3j-TuEFVll1U02VIAoX12FIKIuIdDoo-s1PNVhka9PAzCd7_WFiaUCW_umySQtj0A5Y0vZTZzdvRAlPrkUeqDCb8xLNRuYc0m5Zg3T_fJMLZGD9oMayPY2Qtlwjhax7buRnQ5yDYzNdCe-1mGbakx7S9RVLMKw"/>
+<div class="p-3">
+<div class="d-flex justify-content-between align-items-center mb-1">
+<h6 class="fw-bold mb-0 text-truncate">Spicy Chicken Wrap</h6>
+<span class="fw-bold text-primary">$8.90</span>
+</div>
+<p class="text-muted small mb-3" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Grilled chicken breast with chipotle sauce and fresh garden veggies.</p>
+<div class="d-flex justify-content-between align-items-center">
+<span class="badge bg-warning-subtle text-warning px-2 py-1" style="font-size: 10px; font-weight: 700;">LOW STOCK</span>
+<span class="material-symbols-outlined text-muted opacity-50 fs-6">info</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Product 4 -->
+<div class="col-sm-6 col-lg-3">
+<div class="product-card position-relative shadow-sm">
+<span class="badge-category">Snack</span>
+<img alt="Fruit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPJ3mv0Kaz6_wj_p1lihIt221XG8gwve4fH3IXwZ7axhEA1E_g-qeHZPADMuvcd6i0UX2nMzFDe4Yv3X-eOmYRt_MjO1VvpYsfVeYxI6IQgw0_x6VAjFPgEGYVPZvyL7og6Yp7DJTXvauk6DjkaGhBmhKYsQAhE9RQWL-DWnzG_JbB9QjxwZni8VpONa6i8HpkCemsJQ9s5TawLoxG11pQ8d2j1qq3Uv6g8E7CmSzJ6PEHaDdrxCM3LSGk1X8JAGGrRixEQszDJw"/>
+<div class="p-3">
+<div class="d-flex justify-content-between align-items-center mb-1">
+<h6 class="fw-bold mb-0 text-truncate">Fruit Medley</h6>
+<span class="fw-bold text-primary">$3.50</span>
+</div>
+<p class="text-muted small mb-3" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Assortment of seasonal fresh fruits sliced daily.</p>
+<div class="d-flex justify-content-between align-items-center">
+<span class="badge bg-success-subtle text-success px-2 py-1" style="font-size: 10px; font-weight: 700;">IN STOCK</span>
+<span class="material-symbols-outlined text-muted opacity-50 fs-6">info</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Spending History Section -->
+<section>
+<div class="d-flex flex-wrap align-items-end justify-content-between mb-4 gap-3">
+<div>
+<h3 class="fw-bold mb-1">My Spending History</h3>
+<p class="text-muted small mb-0">Your recent canteen transactions and meal logs</p>
+</div>
+<a class="text-decoration-none text-secondary fw-bold small d-flex align-items-center gap-1" href="#">
+                    Export History <span class="material-symbols-outlined fs-6">download</span>
+</a>
+</div>
+<div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 1rem;">
+<div class="table-responsive">
+<table class="table table-hover mb-0 table-history">
+<thead>
+<tr>
+<th>Transaction ID</th>
+<th>Product</th>
+<th>Category</th>
+<th class="text-end">Price</th>
+<th>Date &amp; Time</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody class="border-top-0">
+<tr>
+<td class="text-muted">#TXN-88219</td>
+<td class="fw-semibold">Harvest Grain Bowl</td>
+<td><span class="badge text-primary" style="background-color: var(--primary-fixed); font-size: 10px;">HOT MEAL</span></td>
+<td class="text-end fw-bold">$12.50</td>
+<td class="text-muted">Oct 24, 2023 • 12:45 PM</td>
+<td><span class="status-dot bg-success"></span><span class="text-success fw-bold" style="font-size: 13px;">Completed</span></td>
+</tr>
+<tr>
+<td class="text-muted">#TXN-88104</td>
+<td class="fw-semibold">Artisan Latte</td>
+<td><span class="badge text-primary" style="background-color: var(--primary-fixed); font-size: 10px;">BEVERAGE</span></td>
+<td class="text-end fw-bold">$4.25</td>
+<td class="text-muted">Oct 24, 2023 • 09:15 AM</td>
+<td><span class="status-dot bg-success"></span><span class="text-success fw-bold" style="font-size: 13px;">Completed</span></td>
+</tr>
+<tr>
+<td class="text-muted">#TXN-87955</td>
+<td class="fw-semibold">Spicy Chicken Wrap</td>
+<td><span class="badge text-primary" style="background-color: var(--primary-fixed); font-size: 10px;">QUICK BITE</span></td>
+<td class="text-end fw-bold">$8.90</td>
+<td class="text-muted">Oct 23, 2023 • 01:20 PM</td>
+<td><span class="status-dot bg-success"></span><span class="text-success fw-bold" style="font-size: 13px;">Completed</span></td>
+</tr>
+<tr>
+<td class="text-muted">#TXN-87820</td>
+<td class="fw-semibold">Mineral Water (500ml)</td>
+<td><span class="badge text-primary" style="background-color: var(--primary-fixed); font-size: 10px;">BEVERAGE</span></td>
+<td class="text-end fw-bold">$1.50</td>
+<td class="text-muted">Oct 23, 2023 • 11:05 AM</td>
+<td><span class="status-dot bg-success"></span><span class="text-success fw-bold" style="font-size: 13px;">Completed</span></td>
+</tr>
+<tr>
+<td class="text-muted">#TXN-87612</td>
+<td class="fw-semibold">Daily Lunch Special</td>
+<td><span class="badge text-primary" style="background-color: var(--primary-fixed); font-size: 10px;">HOT MEAL</span></td>
+<td class="text-end fw-bold">$14.00</td>
+<td class="text-muted">Oct 22, 2023 • 12:55 PM</td>
+<td><span class="status-dot bg-info"></span><span class="text-info fw-bold" style="font-size: 13px;">Refunded</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="text-center py-3 bg-light border-top">
+<button class="btn btn-link text-decoration-none text-muted small fw-bold">Load More History</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body></html>

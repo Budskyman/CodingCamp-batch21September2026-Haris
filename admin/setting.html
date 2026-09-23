@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pengaturan Admin - SmartCanteen</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary: #00355f;
+            --on-primary: #ffffff;
+            --primary-container: #0f4c81;
+            --on-primary-container: #8ebdf9;
+            --surface: #f8f9fa;
+            --on-surface: #191c1d;
+            --surface-variant: #e1e3e4;
+            --on-surface-variant: #42474f;
+            --outline: #727780;
+            --background: #f8f9fa;
+            --on-background: #191c1d;
+            --secondary-container: #cbe7f5;
+            --on-secondary-container: #4e6874;
+            --error: #ba1a1a;
+            --surface-container: #edeeef;
+            --surface-container-low: #f3f4f5;
+            --primary-fixed-dim: #a0c9ff;
+            --on-primary-fixed: #001c37;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--background);
+            color: var(--on-background);
+        }
+
+                /* ============ SIDEBAR UNIVERSAL - SAMA UNTUK SEMUA HALAMAN ============ */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: white;
+            border-right: 1px solid var(--surface-variant);
+            z-index: 1000;
+            padding: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-container);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-icon .material-symbols-outlined {
+            color: var(--on-primary-container);
+            font-size: 24px;
+        }
+
+        .sidebar-brand h5 {
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .sidebar-brand small {
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            padding: 0.625rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--on-surface-variant);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-radius: 0;
+        }
+
+        .nav-link:hover {
+            background-color: var(--surface-container-low);
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            background-color: var(--surface-container);
+            color: var(--primary);
+            font-weight: 700;
+            border-right: 4px solid var(--primary);
+        }
+
+        .nav-link .material-symbols-outlined {
+            font-size: 24px;
+        }
+
+        .sidebar-footer {
+            padding: 0 1.5rem;
+            margin-top: auto;
+        }
+
+        .sidebar-footer .btn-sidebar {
+            background-color: var(--primary);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-footer .btn-sidebar:hover {
+            background-color: var(--primary-container);
+        }
+
+        .sidebar-footer .btn-sidebar .material-symbols-outlined {
+            font-size: 20px;
+        }
+
+        /* Header Styling */
+        .header {
+            height: 64px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 260px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--surface-variant);
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: 260px;
+            padding-top: 64px;
+            min-height: 100vh;
+        }
+
+        .page-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .card {
+            border: 1px solid var(--surface-variant);
+            border-radius: 1rem;
+            box-shadow: none;
+            overflow: hidden;
+            background: white;
+        }
+
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid var(--surface-container-low);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Custom Components */
+        .profile-img-large {
+            width: 96px;
+            height: 96px;
+            border-radius: 1rem;
+            object-fit: cover;
+            border: 4px solid var(--surface-container-low);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            font-weight: 700;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-container);
+            border-color: var(--primary-container);
+        }
+
+        .form-control, .form-select {
+            background-color: var(--surface-container-low);
+            border: 1px solid var(--surface-variant);
+            border-radius: 0.5rem;
+            padding: 0.625rem 0.75rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(0, 53, 95, 0.1);
+            border-color: var(--primary);
+            background-color: white;
+        }
+
+        .material-symbols-outlined {
+            vertical-align: middle;
+        }
+
+        /* Switch Styling */
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .badge-admin {
+            background-color: var(--primary-fixed-dim);
+            color: var(--on-primary-fixed);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            padding: 0.4em 0.8em;
+            border-radius: 2rem;
+        }
+
+        .security-card {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .security-card .text-muted {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar { width: 0; display: none; }
+            .header { left: 0; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+<!-- SIDEBAR - UNIVERSAL SAMA UNTUK SEMUA HALAMAN -->
+<aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+        <div class="brand-icon">
+            <span class="material-symbols-outlined">restaurant</span>
+        </div>
+        <div>
+            <h5>DMIA E-Canteen</h5>
+            <small>DMIA E-Canteen</small>
+        </div>
+    </a>
+    
+    <div class="nav">
+        <a class="nav-link" href="dashboard.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+        </a>
+        <a class="nav-link" href="inventory.html">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span>Inventaris</span>
+        </a>
+        <a class="nav-link" href="payment.html">
+            <span class="material-symbols-outlined">calculate</span>
+            <span>Transaksi</span>
+        </a>
+        <a class="nav-link" href="history.html">
+            <span class="material-symbols-outlined">receipt_long</span>
+            <span>Riwayat Transaksi</span>
+        </a>
+        <a class="nav-link" href="setting.html">
+            <span class="material-symbols-outlined">settings</span>
+            <span>Pengaturan</span>
+        </a>
+    </div>
+    
+    <div class="sidebar-footer">
+        <a href="payment.html" class="btn-sidebar">
+            <span class="material-symbols-outlined">add</span>
+            Transaksi Baru
+        </a>
+    </div>
+</aside>
+<!-- Header -->
+<header class="header">
+<div class="flex-grow-1">
+<div class="input-group" style="max-width: 400px;">
+<span class="input-group-text bg-transparent border-0 pe-0">
+<span class="material-symbols-outlined text-muted">search</span>
+</span>
+<input class="form-control border-0 bg-transparent" placeholder="Cari pengaturan..." type="text"/>
+</div>
+</div>
+<div class="d-flex align-items-center gap-4">
+<div class="d-flex gap-3 text-muted">
+<span class="material-symbols-outlined cursor-pointer">notifications</span>
+<span class="material-symbols-outlined cursor-pointer">help_outline</span>
+</div>
+<div class="vr mx-2" style="height: 32px;"></div>
+<div class="d-flex align-items-center gap-2">
+<div class="text-end d-none d-sm-block">
+<p class="mb-0 fw-bold small text-dark">Administrator</p>
+<p class="mb-0 text-muted fw-semibold" style="font-size: 10px;">ADMINISTRATOR</p>
+</div>
+<img alt="Admin" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYgNSh8JJHFv-S3vhcbNA557aBqmVDrYTWd3A7W77EKUFsGCnq00y091WIJURE3xd3ni5XOTXVLhBIXV5Z6nNdVgEw-kvhKhUC0lgh0ZsevOIL7H9F4k4tM-CiUAzUG_7-DhpismdkFKtlJ7MEywsyQmw762O81_m1XKPYjt6kgOjT54eFDDHfSBx42A4B0ldusD6-5gdMkzM38gcUzw7jPb5aEah5CdV4dx4NxUw0zPXqyGP2HEpg0rAZXhX3AI57HCx11m-S8w" width="40"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="main-content">
+<div class="page-container">
+<!-- Page Header -->
+<div class="mb-5">
+<h1 class="h2 fw-bold text-dark">Pengaturan Admin</h1>
+<p class="text-muted">Kelola profil administrator, preferensi sistem, dan pengaturan keamanan.</p>
+</div>
+<div class="row g-4">
+<!-- Left Column: Profile -->
+<div class="col-lg-8">
+<div class="card mb-4">
+<div class="card-header">
+<div class="d-flex align-items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+<h5 class="mb-0 fw-bold">Informasi Profil</h5>
+</div>
+<button class="btn btn-link text-primary p-0 text-decoration-none fw-bold small">Ubah Data</button>
+</div>
+<div class="card-body">
+<div class="d-flex align-items-center gap-4 mb-5">
+<div class="position-relative">
+<img alt="Admin Large" class="profile-img-large" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDilogbMI0Pu9wLURvZHmBZ6LL616Q3yk-qbfZbzER3F08lcF910o3grIiiGueaBtZeIzNG_ykgmKMw4jx7CfMYZWhZJ25HB-FHRacdLr409oBfW1Y-7FSN4WhYzoT9PHSuKr-QCC5BBaBfm6dfrBZiKdOA8VMAjR3bD7b598Qvo9Ml-PosNv7ysq-3Tg9FWAf7SIjdgMTzrMkac4ffB0cOQzmlb1xoGyeoGjjD3KeLFPKuTVjfyur-qD48MgsRc1Ykut-E39HujQ"/>
+<button class="btn btn-sm btn-light position-absolute bottom-0 end-0 rounded-circle shadow-sm border p-1" style="transform: translate(25%, 25%);">
+<span class="material-symbols-outlined fs-6">photo_camera</span>
+</button>
+</div>
+<div>
+<h4 class="mb-1 fw-bold text-dark">Administrator</h4>
+<p class="text-muted mb-2">admin@smartcanteen.enterprise.com</p>
+<span class="badge badge-admin">Administrator Utama</span>
+</div>
+</div>
+<form>
+<div class="row g-3">
+<div class="col-md-6">
+<label class="form-label fw-bold small text-dark">Nama Lengkap</label>
+<input class="form-control" type="text" value="Administrator"/>
+</div>
+<div class="col-md-6">
+<label class="form-label fw-bold small text-dark">Alamat Email</label>
+<input class="form-control" type="email" value="admin@smartcanteen.enterprise.com"/>
+</div>
+<div class="col-12">
+<label class="form-label fw-bold small text-dark">Kata Sandi</label>
+<div class="input-group">
+<input class="form-control" type="password" value="********"/>
+<button class="btn btn-outline-secondary border-start-0 text-primary fw-bold small text-uppercase" type="button">Ubah</button>
+</div>
+</div>
+</div>
+</form>
+</div>
+</div>
+<!-- Preferensi Sistem -->
+<div class="card">
+<div class="card-header">
+<div class="d-flex align-items-center gap-2">
+<span class="material-symbols-outlined text-primary">settings_suggest</span>
+<h5 class="mb-0 fw-bold">Preferensi Sistem</h5>
+</div>
+</div>
+<div class="card-body">
+<div class="row g-4">
+<div class="col-md-4">
+<label class="form-label fw-bold small text-dark">Default Currency</label>
+<select class="form-select">
+<option selected="">IDR (Indonesian Rupiah)</option>
+<option>USD (US Dollar)</option>
+<option>SGD (Singapore Dollar)</option>
+</select>
+</div>
+<div class="col-md-4">
+<label class="form-label fw-bold small text-dark">Timezone</label>
+<select class="form-select">
+<option selected="">WIB (GMT+7)</option>
+<option>WITA (GMT+8)</option>
+<option>WIT (GMT+9)</option>
+</select>
+</div>
+<div class="col-md-4">
+<label class="form-label fw-bold small text-dark">Bahasa</label>
+<select class="form-select">
+<option selected="">Bahasa Indonesia</option>
+<option>English (UK)</option>
+<option>English (US)</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Keamanan & Notifikasi -->
+<div class="col-lg-4">
+<!-- Enhanced Keamanan Card -->
+<div class="card security-card p-4 mb-4">
+<div class="d-flex flex-column h-100">
+<div class="mb-4">
+<div class="bg-white bg-opacity-10 rounded p-2 d-inline-flex mb-3">
+<span class="material-symbols-outlined text-white">verified_user</span>
+</div>
+<h5 class="fw-bold text-white mb-2">Enhanced Keamanan</h5>
+<p class="small text-muted mb-0">Protect your administrative access with multi-factor authentication.</p>
+</div>
+<div class="mt-auto d-flex align-items-center justify-content-between pt-3 border-top border-white border-opacity-10">
+<span class="fw-bold small">2FA Keamanan</span>
+<div class="form-check form-switch p-0 m-0">
+<input checked="" class="form-check-input" id="flexSwitch2fa" style="width: 3rem; height: 1.5rem; margin-left: 0;" type="checkbox"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Sessions -->
+<div class="card mb-4">
+<div class="card-body">
+<h6 class="fw-bold small text-uppercase text-muted mb-4">Active Sessions</h6>
+<div class="d-flex align-items-center gap-3 mb-4">
+<div class="bg-light p-2 rounded">
+<span class="material-symbols-outlined text-muted">laptop_mac</span>
+</div>
+<div>
+<p class="mb-0 fw-bold small">Chrome on macOS</p>
+<p class="mb-0 text-muted" style="font-size: 10px;">Jakarta, Indonesia • Active now</p>
+</div>
+</div>
+<button class="btn btn-link w-100 text-danger text-decoration-none fw-bold small p-0 border-top pt-3">Log out all other devices</button>
+</div>
+</div>
+<!-- Notifikasi -->
+<div class="card">
+<div class="card-header">
+<div class="d-flex align-items-center gap-2">
+<span class="material-symbols-outlined text-primary">notifications_active</span>
+<h5 class="mb-0 fw-bold">Notification Controls</h5>
+</div>
+</div>
+<div class="card-body">
+<div class="d-flex flex-column gap-4">
+<div class="d-flex align-items-center justify-content-between">
+<div>
+<p class="mb-0 fw-bold small text-dark">Transaksi Baru Alerts</p>
+<p class="mb-0 text-muted small">Real-time alerts for every order.</p>
+</div>
+<div class="form-check form-switch">
+<input checked="" class="form-check-input" type="checkbox"/>
+</div>
+</div>
+<div class="d-flex align-items-center justify-content-between">
+<div>
+<p class="mb-0 fw-bold small text-dark">Low Stock Warnings</p>
+<p class="mb-0 text-muted small">Notify for items below threshold.</p>
+</div>
+<div class="form-check form-switch">
+<input checked="" class="form-check-input" type="checkbox"/>
+</div>
+</div>
+<div class="d-flex align-items-center justify-content-between">
+<div>
+<p class="mb-0 fw-bold small text-dark">System Updates</p>
+<p class="mb-0 text-muted small">Receive maintenance emails.</p>
+</div>
+<div class="form-check form-switch">
+<input class="form-check-input" type="checkbox"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="d-flex justify-content-end align-items-center gap-3 mt-5 pb-5">
+<button class="btn btn-link text-muted text-decoration-none fw-bold">Discard Ubahs</button>
+<button class="btn btn-primary px-5">Save Configuration</button>
+</div>
+</div>
+</main>
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+<script>
+// ==================== E-CANTEEN NAVIGATION ====================
+(function() {
+    // Fungsi untuk berpindah halaman
+    function goTo(page) {
+        window.location.href = page;
+    }
+    
+    // Dapatkan halaman saat ini
+    var currentPage = window.location.pathname.split('/').pop();
+    if (currentPage === '' || currentPage === 'index.html') currentPage = 'dashboard.html';
+    
+    // 1. PERBAIKI SEMUA MENU SIDEBAR
+    var allLinks = document.querySelectorAll('.sidebar a, .sidebar .nav-link, .sidebar .nav-link-custom');
+    for (var i = 0; i < allLinks.length; i++) {
+        var link = allLinks[i];
+        var text = link.innerText.trim();
+        
+        // Set href berdasarkan teks menu
+        if (text === 'Dashboard') {
+            link.href = 'dashboard.html';
+            if (currentPage === 'dashboard.html') link.classList.add('active');
+        }
+        else if (text === 'Inventaris') {
+            link.href = 'inventory.html';
+            if (currentPage === 'inventory.html') link.classList.add('active');
+        }
+        else if (text === 'Transaksi') {
+            link.href = 'payment.html';
+            if (currentPage === 'payment.html') link.classList.add('active');
+        }
+        else if (text === 'Riwayat Transaksi') {
+            link.href = 'history.html';
+            if (currentPage === 'history.html') link.classList.add('active');
+        }
+        else if (text === 'Pengaturan') {
+            link.href = 'setting.html';
+            if (currentPage === 'setting.html') link.classList.add('active');
+        }
+    }
+    
+    // 2. PERBAIKI TOMBOL NEW TRANSACTION
+    var allButtons = document.querySelectorAll('button, .btn, a');
+    for (var i = 0; i < allButtons.length; i++) {
+        var btn = allButtons[i];
+        if (btn.innerText.indexOf('Transaksi Baru') !== -1) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'payment.html';
+            };
+            btn.style.cursor = 'pointer';
+        }
+    }
+    
+    // 3. PERBAIKI LOGO KE DASHBOARD
+    var logos = document.querySelectorAll('.sidebar-brand, .sidebar-logo, .d-flex.align-items-center.gap-3');
+    for (var i = 0; i < logos.length; i++) {
+        var logo = logos[i];
+        logo.style.cursor = 'pointer';
+        logo.onclick = function() {
+            window.location.href = 'dashboard.html';
+        };
+    }
+    
+    // 4. PERBAIKI SEE ALL HISTORY
+    for (var i = 0; i < allButtons.length; i++) {
+        var btn = allButtons[i];
+        if (btn.innerText.indexOf('See All Riwayat Transaksi') !== -1 || btn.innerText.indexOf('See All') !== -1) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'history.html';
+            };
+            btn.style.cursor = 'pointer';
+        }
+    }
+    
+    console.log('Navigasi siap! Halaman saat ini: ' + currentPage);
+})();
+// ==================== END NAVIGATION ====================
+</script>
+</body></html>
