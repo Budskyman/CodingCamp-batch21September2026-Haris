@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartCanteen Admin Dashboard</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- Fonts and Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary: #00355f;
+            --primary-container: #0f4c81;
+            --on-primary: #ffffff;
+            --secondary: #48626e;
+            --secondary-container: #cbe7f5;
+            --on-secondary-container: #4e6874;
+            --surface: #f8f9fa;
+            --surface-container: #edeeef;
+            --surface-container-low: #f3f4f5;
+            --on-surface: #191c1d;
+            --on-surface-variant: #42474f;
+            --outline: #727780;
+            --error: #ba1a1a;
+            --error-container: #ffdad6;
+            --on-error-container: #93000a;
+            --background: #f8f9fa;
+            --manrope: 'Manrope', sans-serif;
+            --inter: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--inter);
+            background-color: var(--background);
+            color: var(--on-surface);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--manrope);
+            font-weight: 700;
+        }
+
+                /* ============ SIDEBAR UNIVERSAL - SAMA UNTUK SEMUA HALAMAN ============ */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: white;
+            border-right: 1px solid var(--surface-variant);
+            z-index: 1000;
+            padding: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-container);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-icon .material-symbols-outlined {
+            color: var(--on-primary-container);
+            font-size: 24px;
+        }
+
+        .sidebar-brand h5 {
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .sidebar-brand small {
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            padding: 0.625rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--on-surface-variant);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-radius: 0;
+        }
+
+        .nav-link:hover {
+            background-color: var(--surface-container-low);
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            background-color: var(--surface-container);
+            color: var(--primary);
+            font-weight: 700;
+            border-right: 4px solid var(--primary);
+        }
+
+        .nav-link .material-symbols-outlined {
+            font-size: 24px;
+        }
+
+        .sidebar-footer {
+            padding: 0 1.5rem;
+            margin-top: auto;
+        }
+
+        .sidebar-footer .btn-sidebar {
+            background-color: var(--primary);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-footer .btn-sidebar:hover {
+            background-color: var(--primary-container);
+        }
+
+        .sidebar-footer .btn-sidebar .material-symbols-outlined {
+            font-size: 20px;
+        }
+
+        .top-bar {
+            height: 64px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 260px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #dee2e6;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 88px 2rem 3rem;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .search-container .material-symbols-outlined {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--outline);
+            font-size: 1.25rem;
+        }
+
+        .search-input {
+            padding-left: 2.5rem;
+            border-radius: 8px;
+            background-color: var(--surface-container-low);
+            border: none;
+            font-size: 0.875rem;
+        }
+
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            box-shadow: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .kpi-card {
+            padding: 1.5rem;
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--on-surface-variant);
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .trending-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            background-color: #e6fcf5;
+            color: #0ca678;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .chart-bar{
+            width:40px;
+            height:10px;
+            background:var(--primary);
+            border-radius:6px 6px 0 0;
+            transition:height .6s ease;
+        }
+
+        .chart-bar:hover {
+            background-color: var(--primary-container);
+        }
+
+        .low-stock-item {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--surface-container);
+        }
+
+        .critical-alert {
+            background-color: var(--error-container);
+            border-color: transparent;
+            color: var(--on-error-container);
+        }
+
+        .btn-primary-custom {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: var(--primary-container);
+            color: white;
+        }
+
+        .table-custom th {
+            background-color: var(--surface-container-low);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--on-surface-variant);
+            padding: 1rem;
+            text-transform: uppercase;
+        }
+
+        .table-custom td {
+            padding: 1rem;
+            vertical-align: middle;
+            font-size: 0.875rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-completed { background-color: #e6fcf5; color: #0ca678; }
+        .status-pending { background-color: #fff4e6; color: #f08c00; }
+
+        .material-symbols-outlined {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<!-- SIDEBAR - UNIVERSAL SAMA UNTUK SEMUA HALAMAN -->
+<aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+        <div class="brand-icon">
+            <span class="material-symbols-outlined">restaurant</span>
+        </div>
+        <div>
+            <h5>DMEC</h5>
+            <small>DMIA E-Canteen</small>
+        </div>
+    </a>
+    
+    <div class="nav">
+        <a class="nav-link" href="dashboard.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+        </a>
+        <a class="nav-link" href="inventory.html">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span>Inventaris</span>
+        </a>
+        <a class="nav-link" href="payment.html">
+            <span class="material-symbols-outlined">calculate</span>
+            <span>Transaksi</span>
+        </a>
+        <a class="nav-link" href="history.html">
+            <span class="material-symbols-outlined">receipt_long</span>
+            <span>Riwayat Transaksi</span>
+        </a>
+        <a class="nav-link" href="setting.html">
+            <span class="material-symbols-outlined">settings</span>
+            <span>Pengaturan</span>
+        </a>
+    </div>
+    
+    <div class="sidebar-footer">
+        <a href="payment.html" class="btn-sidebar">
+            <span class="material-symbols-outlined">add</span>
+            Transaksi Baru
+        </a>
+    </div>
+</aside>
+<!-- Top Bar -->
+<header class="top-bar">
+<div class="search-container">
+<span class="material-symbols-outlined">search</span>
+<input class="form-control search-input" placeholder="Cari transaksi atau produk..." type="text"/>
+</div>
+<div class="d-flex align-items-center gap-4">
+<div class="d-flex align-items-center gap-3">
+<button class="btn p-1 text-muted position-relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+</button>
+<button class="btn p-1 text-muted">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+<div class="vr mx-2 h-50"></div>
+<div class="d-flex align-items-center gap-3">
+<div class="text-end d-none d-sm-block">
+<div class="fw-bold small text-primary">Administrator</div>
+</div>
+<img alt="Admin" class="rounded-circle border border-2" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCconFYxN6IrH1aZPoxLY8zSKOk_2J5DAc_9nDRHzLFELwc8p9HiFgk48AK1GzS77RaTBzKRDlZpzNUY8lwf2HTQV5N8x8mM3LRMJWlin2D-CZxmvV7kZqJ7vKp2p91p_5pDyhP5VYKU82OHutxW1dEQ6cZ-vX4Im0h5aQsEKC7huFT99pXVYPdFjzLJT1K9kY_gR5gtt78Xf22623Evhs0sxXqom8LJMu3vTng2zlxzmzaBydcsVcYEhStmxhDfdsxPwx_53Xkog" width="40"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="main-content">
+<div class="container-fluid p-0">
+<div class="mb-5">
+<h2 class="text-primary mb-1">Dashboard</h2>
+<p class="text-muted">Ringkasan aktivitas operasional kantin secara real-time.</p>
+</div>
+<!-- KPI Row -->
+<div class="row g-4 mb-4">
+<div class="col-md-4">
+<div class="card kpi-card">
+<div class="d-flex justify-content-between align-items-start mb-3">
+<span class="kpi-label">Total Penjualan</span>
+<div class="rounded-circle bg-light p-2 d-flex">
+<span class="material-symbols-outlined text-primary">payments</span>
+</div>
+</div>
+<div class="d-flex align-items-baseline gap-2">
+<h3 id="totalSales" class="kpi-value">Rp0</h3>
+<span class="trending-badge">
+<span class="material-symbols-outlined fs-6">trending_up</span> 15%
+                            </span>
+</div>
+<p class="text-muted small mt-2 m-0">Dibandingkan dengan Rp 3.695.000 kemarin</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card kpi-card">
+<div class="d-flex justify-content-between align-items-start mb-3">
+<span class="kpi-label">Total Transaksi</span>
+<div class="rounded-circle bg-light p-2 d-flex">
+<span class="material-symbols-outlined text-muted">receipt</span>
+</div>
+</div>
+<h3 id="totalTransaction" class="kpi-value">0</h3>
+<p class="text-muted small mt-2 m-0">Rata-rata waktu transaksi: 1,4 menit</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card kpi-card position-relative overflow-hidden">
+<div class="d-flex justify-content-between align-items-start mb-3">
+<span class="kpi-label">Produk Terlaris</span>
+<div class="rounded-circle bg-warning-subtle p-2 d-flex">
+<span class="material-symbols-outlined text-warning" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<h3 id="bestProduct">-</h3>
+<p class="text-muted small mt-2 m-0">Terjual 42 porsi hari ini</p>
+<span class="material-symbols-outlined position-absolute" style="bottom: -15px; right: -15px; font-size: 100px; opacity: 0.05; transform: rotate(15deg);">lunch_dining</span>
+</div>
+</div>
+</div>
+<div class="row g-4">
+<!-- Chart Area -->
+<div class="col-lg-8">
+<div class="card h-100 p-4">
+<div class="d-flex justify-content-between align-items-center mb-5">
+<div>
+<h4 class="text-primary h5 mb-1">Tren Penjualan Mingguan</h4>
+<p class="text-muted small m-0">Jumlah transaksi selama 7 hari terakhir</p>
+</div>
+<select class="form-select form-select-sm w-auto border-0 bg-light">
+<option>7 Hari Terakhir</option>
+<option>1 Bulan Terakhir</option>
+</select>
+</div>
+<div class="d-flex align-items-end justify-content-between h-100 px-3 pb-3" style="min-height:250px;">
+
+    <div class="text-center w-100">
+        <div class="chart-bar mx-auto" id="bar0"></div>
+        <div class="mt-2 text-muted small">Senin</div>
+    </div>
+
+    <div class="text-center w-100">
+        <div class="chart-bar mx-auto" id="bar1"></div>
+        <div class="mt-2 text-muted small">Selasa</div>
+    </div>
+
+    <div class="text-center w-100">
+        <div class="chart-bar mx-auto" id="bar2"></div>
+        <div class="mt-2 text-muted small">Rabu</div>
+    </div>
+
+    <div class="text-center w-100">
+        <div class="chart-bar mx-auto" id="bar3"></div>
+        <div class="mt-2 text-muted small">Kamis</div>
+    </div>
+
+    <div class="text-center w-100">
+        <div class="chart-bar mx-auto" id="bar4"></div>
+        <div class="mt-2 text-muted small">Jumat</div>
+    </div>
+
+    <div class="text-center w-100">
+        <div class="chart-bar mx-auto" id="bar5"></div>
+        <div class="mt-2 text-muted small">Sabtu</div>
+    </div>
+
+    <div class="text-center w-100">
+        <div class="chart-bar mx-auto" id="bar6"></div>
+        <div class="mt-2 text-muted small">Minggu</div>
+    </div>
+</div>
+</div>
+</div>
+<!-- Low Stock Column -->
+<div class="col-lg-4">
+<div class="card p-4 mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4">
+<h5 class="m-0 h6 text-primary d-flex align-items-center gap-2">
+<span class="material-symbols-outlined text-danger">inventory_2</span>
+                                Stok Minimum
+                            </h5>
+<a class="text-decoration-none small fw-bold text-primary" href="#">Lihat Semua</a>
+</div>
+<div class="low-stock-item critical-alert">
+<div class="d-flex justify-content-between align-items-center">
+<div>
+<div class="fw-bold small">Air Mineral 600 ml</div>
+<div class="small opacity-75">Sisa stok: 4</div>
+</div>
+<span class="badge bg-danger text-uppercase" style="font-size: 9px;">Kritis</span>
+</div>
+</div>
+<div class="low-stock-item">
+<div class="d-flex justify-content-between align-items-center">
+<div>
+<div class="fw-bold small text-primary">Ayam Fillet</div>
+<div class="small text-muted">Sisa stok: 1,5 kg</div>
+</div>
+<span class="badge text-uppercase text-warning bg-warning-subtle" style="font-size: 9px;">Segera Restok</span>
+</div>
+</div>
+<div class="low-stock-item">
+<div class="d-flex justify-content-between align-items-center">
+<div>
+<div class="fw-bold small text-primary">Biji Kopi Arabika</div>
+<div class="small text-muted">Sisa stok: 0,8 kg</div>
+</div>
+<span class="badge text-uppercase text-warning bg-warning-subtle" style="font-size: 9px;">Segera Restok</span>
+</div>
+</div>
+</div>
+<!-- Status Payroll -->
+<div class="card p-4 border-0" style="background: var(--primary); color: white;">
+<h5 class="h6 mb-3">Status Payroll</h5>
+<p class="small opacity-75 mb-4">Periode payroll Juli 2026. Total transaksi siap direkap sebelum dikirim ke HR.</p>
+<button class="btn btn-light w-100 fw-bold btn-sm">Ekspor Laporan</button>
+</div>
+</div>
+</div>
+<!-- Recent Activity -->
+<div class="card mt-4 overflow-hidden">
+<div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+<div>
+<h5 class="h6 m-0 text-primary">Transaksi Terbaru</h5>
+<p class="text-muted small m-0">Daftar transaksi terbaru yang telah diproses.</p>
+</div>
+<button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2">
+<span class="material-symbols-outlined fs-6">filter_list</span>
+                        Filter
+                    </button>
+</div>
+<div class="table-responsive">
+<table class="table table-custom table-hover m-0">
+<thead>
+<tr>
+<th>ID Transaksi</th>
+<th>Nama Karyawan</th>
+<th>Produk</th>
+<th>Jumlah</th>
+<th>Status</th>
+<th>Waktu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="fw-bold">#TRX-8842</td>
+<td class="fw-medium">Adi Wijaya</td>
+<td class="text-muted">Nasi Goreng Spesial, Es Teh Manis</td>
+<td class="fw-bold">Rp 65.000</td>
+<td><span class="status-badge status-completed">Berhasil</span></td>
+<td class="text-muted">14:22 PM</td>
+</tr>
+<tr>
+<td class="fw-bold">#TRX-8841</td>
+<td class="fw-medium">Siti Aminah</td>
+<td class="text-muted">Nasi Goreng Special</td>
+<td class="fw-bold">Rp 35.000</td>
+<td><span class="status-badge status-completed">Berhasil</span></td>
+<td class="text-muted">14:18 PM</td>
+</tr>
+<tr>
+<td class="fw-bold">#TRX-8840</td>
+<td class="fw-medium">Budi Santoso</td>
+<td class="text-muted">Kopi Latte, Roti Cokelat</td>
+<td class="fw-bold">Rp 58.000</td>
+<td><span class="status-badge status-completed">Berhasil</span></td>
+<td class="text-muted">14:05 PM</td>
+</tr>
+<tr>
+<td class="fw-bold">#TRX-8839</td>
+<td class="fw-medium">Dewi Lestari</td>
+<td class="text-muted">Salad Sayur, Mineral Water</td>
+<td class="fw-bold">Rp 42.000</td>
+<td><span class="status-badge status-pending">Diproses</span></td>
+<td class="text-muted">13:58 PM</td>
+</tr>
+<tr>
+<td class="fw-bold">#TRX-8838</td>
+<td class="fw-medium">Eko Prasetyo</td>
+<td class="text-muted">Ayam Teriyaki</td>
+<td class="fw-bold">Rp 45.000</td>
+<td><span class="status-badge status-completed">Berhasil</span></td>
+<td class="text-muted">13:45 PM</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-3 text-center bg-light border-top">
+<a href="history.html" class="btn btn-link btn-sm text-decoration-none text-primary fw-bold">See All Riwayat Transaksi</a>
+</div>
+</div>
+</div>
+</main>
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+<script>
+// ==================== E-CANTEEN NAVIGATION ====================
+(function() {
+    // Fungsi untuk berpindah halaman
+    function goTo(page) {
+        window.location.href = page;
+    }
+    
+    // Dapatkan halaman saat ini
+    var currentPage = window.location.pathname.split('/').pop();
+    if (currentPage === '' || currentPage === 'index.html') currentPage = 'dashboard.html';
+    
+    // 1. PERBAIKI SEMUA MENU SIDEBAR
+    var allLinks = document.querySelectorAll('.sidebar a, .sidebar .nav-link, .sidebar .nav-link-custom');
+    for (var i = 0; i < allLinks.length; i++) {
+        var link = allLinks[i];
+        var text = link.innerText.trim();
+        
+        // Set href berdasarkan teks menu
+        if (text === 'Dashboard') {
+            link.href = 'dashboard.html';
+            if (currentPage === 'dashboard.html') link.classList.add('active');
+        }
+        else if (text === 'Inventaris') {
+            link.href = 'inventory.html';
+            if (currentPage === 'inventory.html') link.classList.add('active');
+        }
+        else if (text === 'Transaksi') {
+            link.href = 'payment.html';
+            if (currentPage === 'payment.html') link.classList.add('active');
+        }
+        else if (text === 'Riwayat Transaksi') {
+            link.href = 'history.html';
+            if (currentPage === 'history.html') link.classList.add('active');
+        }
+        else if (text === 'Pengaturan') {
+            link.href = 'setting.html';
+            if (currentPage === 'setting.html') link.classList.add('active');
+        }
+    }
+    
+    // 2. PERBAIKI TOMBOL NEW TRANSACTION
+    var allButtons = document.querySelectorAll('button, .btn, a');
+    for (var i = 0; i < allButtons.length; i++) {
+        var btn = allButtons[i];
+        if (btn.innerText.indexOf('Transaksi Baru') !== -1) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'payment.html';
+            };
+            btn.style.cursor = 'pointer';
+        }
+    }
+    
+    // 3. PERBAIKI LOGO KE DASHBOARD
+    var logos = document.querySelectorAll('.sidebar-brand, .sidebar-logo, .d-flex.align-items-center.gap-3');
+    for (var i = 0; i < logos.length; i++) {
+        var logo = logos[i];
+        logo.style.cursor = 'pointer';
+        logo.onclick = function() {
+            window.location.href = 'dashboard.html';
+        };
+    }
+    
+    // 4. PERBAIKI SEE ALL HISTORY
+    for (var i = 0; i < allButtons.length; i++) {
+        var btn = allButtons[i];
+        if (btn.innerText.indexOf('See All Riwayat Transaksi') !== -1 || btn.innerText.indexOf('See All') !== -1) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'history.html';
+            };
+            btn.style.cursor = 'pointer';
+        }
+    }
+    
+    console.log('Navigasi siap! Halaman saat ini: ' + currentPage);
+})();
+// ==================== END NAVIGATION ====================
+</script>
+</body></html>
