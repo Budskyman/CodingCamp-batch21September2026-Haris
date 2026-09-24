@@ -38,7 +38,7 @@ function loadProductsFromStorage() {
         // Data default produk dengan variasi stok (ada yang stok menipis)
         products = [
             { id: 'PRD-9023', name: 'Nasi Ayam Geprek', category: 'Makanan', price: 19000, stock: 7, status: 'Stok Menipis', image: '../Styles/images/geprek.jpeg' },
-            { id: 'PRD-3112', name: 'Le-Minerale', category: 'Minuman', price: 5000, stock: 12, status: 'Stok Menipis', image: '../Styles/images/LE-MINERALEAIR-MINERAL-1500ml-BTL.jpg' },
+            { id: 'PRD-3112', name: 'Le-Minerale', category: 'Minuman', price: 5000, stock: 12, status: 'Stok Menipis', image: '../Styles/images/Leminerale.jpg' },
             { id: 'PRD-3113', name: 'ABC Kopi Botol', category: 'Minuman', price: 4500, stock: 23, status: 'Tersedia', image: '../Styles/images/abc kopsu.jpg' },
             { id: 'PRD-4456', name: 'Aneka Gorengan', category: 'Makanan', price: 1500, stock: 82, status: 'Tersedia', image: '../Styles/images/gorengan.jpg' },
             { id: 'PRD-7782', name: 'Sari Gandum', category: 'Makanan', price: 2500, stock: 32, status: 'Tersedia', image: '../Styles/images/sari gandum.jpg' },
