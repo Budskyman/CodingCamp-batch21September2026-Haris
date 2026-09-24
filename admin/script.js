@@ -36,88 +36,16 @@ function loadProductsFromStorage() {
         products = JSON.parse(stored);
     } else {
         // Data default produk dengan variasi stok (ada yang stok menipis)
-        Products = [
-            {
-                id: 'PRD-9023',
-                name: 'Nasi Ayam Geprek',
-                category: 'Makanan',
-                price: 19000,
-                stock: 7,
-                status: 'Stok Menipis',
-                image: 'styles/image/geprek.jpeg'
-            },
-            {
-                id: 'PRD-3112',
-                name: 'Le-Minerale',
-                category: 'Minuman',
-                price: 5000,
-                stock: 12,
-                status: 'Stok Menipis',
-                image: 'styles/image/LE-MINERAL FAIR-MINERAL-1500ml-BTL.jpg'
-            },
-            {
-                id: 'PRD-3114',
-                name: 'ABC Kopi Botol',
-                category: 'Minuman',
-                price: 4500,
-                stock: 23,
-                status: 'Tersedia',
-                image: 'styles/image/abc kopsu.jpg'
-            },
-            {
-                id: 'PRD-4456',
-                name: 'Aneka Gorengan',
-                category: 'Makanan',
-                price: 1500,
-                stock: 82,
-                status: 'Tersedia',
-                image: 'styles/image/gorengan.jpg'
-            },
-            {
-                id: 'PRD-7782',
-                name: 'Sari Gandum',
-                category: 'Makanan',
-                price: 2500,
-                stock: 32,
-                status: 'Tersedia',
-                image: 'styles/image/sari gandum.jpg'
-            },
-            {
-                id: 'PRD-7783',
-                name: 'Mie Cup',
-                category: 'Makanan',
-                price: 7000,
-                stock: 20,
-                status: 'Tersedia',
-                image: 'styles/image/pop mie.jpg'
-            },
-            {
-                id: 'PRD-1102',
-                name: 'Good Day',
-                category: 'Minuman',
-                price: 7500,
-                stock: 32,
-                status: 'Tersedia',
-                image: 'styles/image/good day.jpg'
-            },
-            {
-                id: 'PRD-1103',
-                name: 'Nasi Padang',
-                category: 'Makanan',
-                price: 19000,
-                stock: 34,
-                status: 'Tersedia',
-                image: 'styles/image/nasi-padang-bungkus.jpeg'
-            },
-            {
-                id: 'PRD-5502',
-                name: 'Nasi Uduk',
-                category: 'Makanan',
-                price: 10000,
-                stock: 23,
-                status: 'Tersedia',
-                image: 'styles/image/Nasi_uduk_netherlands.jpg'
-            }
+        products = [
+            { id: 'PRD-9023', name: 'Nasi Ayam Geprek', category: 'Makanan', price: 19000, stock: 7, status: 'Stok Menipis', image: 'styles/image/geprek.jpeg' },
+            { id: 'PRD-3112', name: 'Le-Minerale', category: 'Minuman', price: 5000, stock: 12, status: 'Stok Menipis', image: 'styles/image/LE-MINERAL FAIR-MINERAL-1500ml-BTL.jpg' },
+            { id: 'PRD-3113', name: 'ABC Kopi Botol', category: 'Minuman', price: 4500, stock: 23, status: 'Tersedia', image: 'styles/image/abc kopsu.jpg' },
+            { id: 'PRD-4456', name: 'Aneka Gorengan', category: 'Makanan', price: 1500, stock: 82, status: 'Tersedia', image: 'styles/image/gorengan.jpg' },
+            { id: 'PRD-7782', name: 'Sari Gandum', category: 'Makanan', price: 2500, stock: 32, status: 'Tersedia', image: 'styles/image/sari gandum.jpg' },
+            { id: 'PRD-7783', name: 'Mie Cup', category: 'Makanan', price: 7000, stock: 20, status: 'Tersedia', image: 'styles/image/pop mie.jpg' },
+            { id: 'PRD-1102', name: 'Good Day', category: 'Minuman', price: 7500, stock: 32, status: 'Tersedia', image: 'styles/image/good day.jpg' },
+            { id: 'PRD-1103', name: 'Nasi Padang', category: 'Makanan', price: 19000, stock: 34, status: 'Tersedia', image: 'styles/image/nasi-padang-bungkus.jpeg' },
+            { id: 'PRD-5502', name: 'Nasi Uduk', category: 'Makanan', price: 10000, stock: 23, status: 'Tersedia', image: 'styles/image/Nasi_uduk_netherlands.jpg' }
         ];
         saveProductsToStorage();
     }
