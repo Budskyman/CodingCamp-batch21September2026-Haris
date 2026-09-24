@@ -36,7 +36,7 @@ function loadProductsFromStorage() {
         products = JSON.parse(stored);
     } else {
         // Data default produk dengan variasi stok (ada yang stok menipis)
-        const defaultProducts = [
+        Products = [
             {
                 id: 'PRD-9023',
                 name: 'Nasi Ayam Geprek',
